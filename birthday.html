@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Happy Birthday Father</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins',sans-serif;
+}
+
+body{
+  height:100vh;
+  background:linear-gradient(160deg,#ffda3a,#ffb703,#ff9f1c);
+  overflow:hidden;
+  color:#7a0000;
+}
+
+/* ---------- SCREENS ---------- */
+.screen{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:opacity 0.8s ease;
+}
+
+.hidden{
+  opacity:0;
+  pointer-events:none;
+}
+
+/* ---------- INTRO ---------- */
+.start-card{
+  background:rgba(255,255,255,0.35);
+  backdrop-filter:blur(18px);
+  border-radius:26px;
+  padding:48px 36px;
+  width:85%;
+  max-width:380px;
+  text-align:center;
+  box-shadow:0 30px 60px rgba(0,0,0,0.25);
+  animation:fadeUp 1s ease;
+}
+
+.start-card h1{
+  font-size:2rem;
+  font-weight:600;
+  margin-bottom:10px;
+}
+
+.start-card p{
+  font-size:1rem;
+  opacity:0.85;
+  margin-bottom:30px;
+}
+
+.continue-btn{
+  padding:14px 40px;
+  border-radius:40px;
+  background:linear-gradient(135deg,#7a0000,#ff2f2f);
+  color:#fff;
+  cursor:pointer;
+  font-size:1rem;
+  letter-spacing:0.5px;
+  box-shadow:0 14px 32px rgba(0,0,0,0.35);
+  transition:all .3s ease;
+}
+
+.continue-btn:hover{
+  transform:translateY(-3px);
+  box-shadow:0 20px 40px rgba(0,0,0,0.4);
+}
+
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(40px);}
+  to{opacity:1;transform:translateY(0);}
+}
+
+/* ---------- SLIDES ---------- */
+#slideScreen{
+  flex-direction:column;
+  padding:20px;
+}
+
+.slide-img{
+  width:90%;
+  max-width:380px;
+  height:58%;
+  border-radius:28px;
+  background-size:cover;
+  background-position:center;
+  box-shadow:0 22px 50px rgba(0,0,0,0.35);
+  animation:imgReveal .8s ease;
+}
+
+@keyframes imgReveal{
+  from{opacity:0;transform:scale(0.95);}
+  to{opacity:1;transform:scale(1);}
+}
+
+.message{
+  margin-top:20px;
+  min-height:70px;
+  font-size:1.2rem;
+  text-align:center;
+  line-height:1.5;
+}
+
+/* ---------- CONTROLS ---------- */
+.controls{
+  margin-top:14px;
+}
+
+button{
+  padding:10px 26px;
+  margin:0 8px;
+  border:none;
+  border-radius:30px;
+  background:#7a0000;
+  color:white;
+  font-size:0.9rem;
+  cursor:pointer;
+  box-shadow:0 8px 20px rgba(0,0,0,0.3);
+  transition:transform .25s ease;
+}
+
+button:hover{
+  transform:translateY(-2px);
+}
+
+/* ---------- FINAL TEXT ---------- */
+.final{
+  font-size:2.1rem;
+  font-weight:600;
+  animation:softGlow 2s infinite;
+}
+
+@keyframes softGlow{
+  50%{text-shadow:0 0 25px rgba(255,0,0,.6);}
+}
+
+/* ---------- FLOATING DOTS (CLEANER THAN RANDOM BALLOONS) ---------- */
+.float{
+  position:absolute;
+  width:14px;
+  height:14px;
+  border-radius:50%;
+  opacity:0.7;
+  animation:floatUp linear infinite;
+}
+
+@keyframes floatUp{
+  to{transform:translateY(-120vh);}
+}
+
+/* ---------- CANDLES ---------- */
+.candles{
+  position:absolute;
+  bottom:18px;
+  display:flex;
+  gap:14px;
+}
+
+.candle{
+  width:12px;
+  height:46px;
+  background:linear-gradient(#fff,#ff4d4d);
+  border-radius:6px;
+  position:relative;
+}
+
+.flame{
+  position:absolute;
+  top:-16px;
+  left:50%;
+  width:12px;
+  height:18px;
+  background:radial-gradient(circle,#fff,#ffb703,#ff7a00);
+  border-radius:50%;
+  transform:translateX(-50%);
+  animation:flicker .25s infinite alternate;
+}
+
+@keyframes flicker{
+  from{opacity:.75;}
+  to{opacity:1;}
+}
+</style>
+</head>
+
+<body>
+
+<!-- INTRO -->
+<div class="screen" id="startScreen">
+  <div class="start-card">
+    <h1>Happy Birthday Father</h1>
+    <p>A small story for my biggest inspiration</p>
+    <div class="continue-btn">Start</div>
+  </div>
+</div>
+
+<!-- SLIDES -->
+<div class="screen hidden" id="slideScreen">
+  <div class="slide-img" id="slideImg"></div>
+  <div class="message" id="slideText"></div>
+
+  <div class="controls">
+    <button onclick="prevSlide()">Prev</button>
+    <button onclick="nextSlide()">Next</button>
+  </div>
+
+  <div class="candles">
+    <div class="candle"><div class="flame"></div></div>
+    <div class="candle"><div class="flame"></div></div>
+    <div class="candle"><div class="flame"></div></div>
+  </div>
+</div>
+
+<script>
+const slides=[
+  {img:"img1.jpg",text:"Thank you for being my inspiration."},
+  {img:"img2.jpg",text:"Thank you for always motivating me."},
+  {img:"img3.jpg",text:"Thank you for teaching me strength and patience."},
+  {img:"img4.jpg",text:"Thank you for making me fall in love with cinema."},
+  {img:"img5.jpg",text:"Thank you for sharing your love for music."},
+  {img:"img6.jpg",text:"Thank you for every sacrifice you made."},
+  {img:"img7.jpg",text:"Thank you for being my hero."},
+  {img:"img8.jpg",text:"Happy Birthday Father ❤️ I love you forever."}
+];
+
+let i=0,typing;
+const start=document.getElementById("startScreen");
+const slideScreen=document.getElementById("slideScreen");
+const img=document.getElementById("slideImg");
+const text=document.getElementById("slideText");
+
+document.querySelector(".continue-btn").onclick=()=>{
+  start.classList.add("hidden");
+  slideScreen.classList.remove("hidden");
+  showSlide();
+  floatingDots();
+};
+
+function showSlide(){
+  img.style.backgroundImage=`url(${slides[i].img})`;
+  text.classList.remove("final");
+  type(slides[i].text);
+  if(i===slides.length-1) text.classList.add("final");
+}
+
+function nextSlide(){ if(i<slides.length-1){i++;showSlide();} }
+function prevSlide(){ if(i>0){i--;showSlide();} }
+
+function type(t){
+  clearInterval(typing);
+  text.innerHTML="";
+  let c=0;
+  typing=setInterval(()=>{
+    text.innerHTML+=t[c++];
+    if(c===t.length) clearInterval(typing);
+  },38);
+}
+
+function floatingDots(){
+  for(let d=0;d<10;d++){
+    const el=document.createElement("div");
+    el.className="float";
+    el.style.left=Math.random()*100+"vw";
+    el.style.bottom="-20px";
+    el.style.background=`hsl(${Math.random()*360},80%,60%)`;
+    el.style.animationDuration=12+Math.random()*6+"s";
+    document.body.appendChild(el);
+  }
+}
+</script>
+
+</body>
+</html>
